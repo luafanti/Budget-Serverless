@@ -35,6 +35,9 @@ node_modules
 .DS_Store
 .tmp
 
+#WEB PACL STUFF
+.webpack
+
 #SERVERLESS STUFF
 admin.env
 .env

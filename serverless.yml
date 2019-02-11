@@ -1,0 +1,67 @@
+# NOTE: update this with your service name
+service: budget-serverless-DEV
+
+# Use the serverless-webpack plugin to transpile ES6
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+# serverless-webpack configuration
+# Enable auto-packing of external modules
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  tableName: 'users-table-${self:provider.stage}'
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+    - dynamodb:Query
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:PutItem
+    - dynamodb:UpdateItem
+    - dynamodb:DeleteItem
+    Resource:
+    - { "Fn::GetAtt": ["UserCategoryDynamoDBTable", "Arn" ] }
+  environment:
+    USERS_TABLE: ${self:custom.tableName}
+    USERS_CATEGORY_TABLE: 'UserCategory2'
+    USER_NAME: 'luafanti'
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+  category:
+    handler: category.handler
+    events:
+    - http: 'ANY category/'
+resources:
+  Resources:
+    UserCategoryDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: Username
+          AttributeType: S
+        - AttributeName: CategoryId
+          AttributeType: S
+        KeySchema:
+        - AttributeName: Username
+          KeyType: HASH
+        - AttributeName: CategoryId
+          KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'UserCategory2'
