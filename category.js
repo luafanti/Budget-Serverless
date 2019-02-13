@@ -57,7 +57,7 @@ app.get('/category/',async function (req, res) {
 })
 
 
-//POST SINGLE
+//CREATE SINGLE
  app.post('/category', async function (req, res) {
     const { mainCategory, subCategory,label } = req.body;
 
@@ -87,7 +87,7 @@ app.get('/category/',async function (req, res) {
     }
 })
 
-
+//UPDATE SINGLE
 app.put('/category/:categoryId', async function (req, res) {
     const { mainCategory, subCategory,label } = req.body;
 
@@ -113,55 +113,29 @@ app.put('/category/:categoryId', async function (req, res) {
     }
 })
 
+//DELETE SINGLE
+app.delete('/category/:categoryId',async function (req, res) {
+    const {categoryId} = req.params;
 
-// Create User endpoint
-app.post('/users', function (req, res) {
-    const { userId, name } = req.body;
-    if (typeof userId !== 'string') {
-        res.status(400).json({ error: '"userId" must be a string' });
-    } else if (typeof name !== 'string') {
-        res.status(400).json({ error: '"name" must be a string' });
-    }
+    console.log(`HELLO DELETE ${categoryId}`)
 
     const params = {
-        TableName: USERS_TABLE,
-        Item: {
+        TableName: USERS_CATEGORY_TABLE,
+        Key: {
             Username: USER_NAME,
-            CategoryID: name,
-        },
+            CategoryId : categoryId,
+        }
     };
 
-    dynamoDb.put(params, (error) => {
-        if (error) {
-            console.log(error);
-            res.status(400).json({ error: 'Could not create user' });
-        }
-        res.json({ userId, name });
-    });
-})
-
-// Get User endpoint
-app.get('/users/:userId', function (req, res) {
-    const params = {
-        TableName: USERS_TABLE,
-        Key: {
-            userId: req.params.userId,
-        },
+    try{
+        await dynamoDbLib.call("delete", params);
+        res.json("Deletes success").status(200);
+    }catch (e) {
+        console.log(e);
+        res.status(400).json({ error: 'Can not delete category '});
     }
-
-
-    dynamoDb.get(params, (error, result) => {
-        if (error) {
-            console.log(error);
-            res.status(400).json({ error: 'Could not get user' });
-        }
-        if (result.Item) {
-            const {userId, name} = result.Item;
-            res.json({ userId, name });
-        } else {
-            res.status(404).json({ error: "User not found" });
-        }
-    });
 })
+
+
 
 module.exports.handler = serverless(app);
