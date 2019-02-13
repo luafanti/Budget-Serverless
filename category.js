@@ -59,7 +59,6 @@ app.get('/category/',async function (req, res) {
 
 //POST SINGLE
  app.post('/category', async function (req, res) {
-    console.log(`HELO POST`)
     const { mainCategory, subCategory,label } = req.body;
 
     if(!mainCategory){
@@ -80,7 +79,6 @@ app.get('/category/',async function (req, res) {
         try{
             await dynamoDbLib.call("put", params);
             const {CategoryId} = params.Item;
-            console.log(`ID : ${CategoryId}`);
             res.json({ CategoryId }).status(201);
         }catch (e) {
             console.log(e);
@@ -90,13 +88,30 @@ app.get('/category/',async function (req, res) {
 })
 
 
+app.put('/category/:categoryId', async function (req, res) {
+    const { mainCategory, subCategory,label } = req.body;
 
+    var params = {
+        TableName : USERS_CATEGORY_TABLE,
+        Key: {
+            Username: USER_NAME,
+            CategoryId : req.params.categoryId,
+        },
+        UpdateExpression : 'set #mc = :MainCategory, #sc = :SubCategory, #l = :Label',
+        ExpressionAttributeNames: { '#mc' : 'MainCategory', '#sc' : 'SubCategory', '#l' : 'Label' },
+        ExpressionAttributeValues : { ':MainCategory' : mainCategory, ':SubCategory' : subCategory, ':Label' : label},
+        ReturnValues: "ALL_NEW"
+    };
 
-
-
-
-
-
+    try{
+        const result = await dynamoDbLib.call("update", params);
+        console.log(`Update result = ${JSON.stringify(result)}`)
+        res.json(result.Attributes).status(200);
+    }catch (e) {
+        console.log(e);
+        res.status(400).json({ error: 'Could not update category' });
+    }
+})
 
 
 // Create User endpoint
