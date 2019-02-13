@@ -13,22 +13,29 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 app.use(bodyParser.json({ strict: false }));
 
-
 //GET
-app.get('/category', function (req, res) {
-    console.log(`HELO GET`)
-
+app.get('/category/:categoryId',async function (req, res) {
     const params = {
         TableName: USERS_CATEGORY_TABLE,
         Key: {
-            userId: req.params.userId,
-        },
+            Username: USER_NAME,
+            CategoryId : req.params.categoryId,
+        }
     }
 
-    console.log(`DB1 ${JSON.stringify(params)}`)
-    res.send('Hello WorlZZZd!')
-})
+    try{
+        const result = await dynamoDbLib.call("get", params);
+        if(result.Item){
+            res.json(result.Item).status(200);
+        }else{
+            res.status(404).json({ error: 'Category not found' });
+        }
 
+    }catch (e) {
+        console.log(e);
+        res.status(400).json({ error: 'Can not get category '});
+    }
+})
 
 
 //POST
@@ -51,7 +58,6 @@ app.get('/category', function (req, res) {
                 createdAt: Date.now()
             },
         };
-
         try{
             await dynamoDbLib.call("put", params);
             const {CategoryId} = params.Item;
@@ -61,32 +67,8 @@ app.get('/category', function (req, res) {
             console.log(e);
             res.status(400).json({ error: 'Could not create category' });
         }
-
-
-        // dynamoDb.put(params, (error) => {
-        //     if (error) {
-        //         console.log(error);
-        //         res.status(400).json({ error: 'Could not create category' });
-        //     }
-        //     const {CategoryId} = params.Item;
-        //     console.log(`ID : ${CategoryId}`);
-        //     res.json({ CategoryId }).status(201);
-        // });
-
-
     }
 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 

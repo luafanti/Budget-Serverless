@@ -46,6 +46,7 @@ functions:
     handler: category.handler
     events:
     - http: 'ANY category/'
+    - http: 'ANY category/{params}'
 resources:
   Resources:
     UserCategoryDynamoDBTable:
