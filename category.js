@@ -13,7 +13,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 app.use(bodyParser.json({ strict: false }));
 
-//GET
+//GET SINGLE
 app.get('/category/:categoryId',async function (req, res) {
     const params = {
         TableName: USERS_CATEGORY_TABLE,
@@ -37,8 +37,27 @@ app.get('/category/:categoryId',async function (req, res) {
     }
 })
 
+//GET ALL
+app.get('/category/',async function (req, res) {
+    const params = {
+        TableName: USERS_CATEGORY_TABLE,
+        KeyConditionExpression: "Username = :userName",
+        ExpressionAttributeValues: {
+            ":userName": USER_NAME
+        }
+    }
 
-//POST
+    try{
+        const result = await dynamoDbLib.call("query", params);
+        res.json(result.Items).status(200);
+    }catch (e) {
+        console.log(e);
+        res.status(400).json({ error: 'Can not get all categories '});
+    }
+})
+
+
+//POST SINGLE
  app.post('/category', async function (req, res) {
     console.log(`HELO POST`)
     const { mainCategory, subCategory,label } = req.body;
