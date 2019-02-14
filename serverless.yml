@@ -1,5 +1,5 @@
 # NOTE: update this with your service name
-service: budget-serverless-DEV
+service: budget-serverless-2
 
 # Use the serverless-webpack plugin to transpile ES6
 plugins:
@@ -12,7 +12,8 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-  tableName: 'users-table-${self:provider.stage}'
+  tableName: ${self:custom.stage}-UserCategory
+  stage: ${opt:stage, self:provider.stage}
 
 provider:
   name: aws
@@ -22,17 +23,17 @@ provider:
   iamRoleStatements:
   - Effect: Allow
     Action:
-    - dynamodb:Query
-    - dynamodb:Scan
-    - dynamodb:GetItem
-    - dynamodb:PutItem
-    - dynamodb:UpdateItem
-    - dynamodb:DeleteItem
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
     Resource:
     - { "Fn::GetAtt": ["UserCategoryDynamoDBTable", "Arn" ] }
   environment:
-    USERS_TABLE: ${self:custom.tableName}
-    USERS_CATEGORY_TABLE: 'UserCategory2'
+    USERS_CATEGORY_TABLE: ${self:custom.tableName}
     USER_NAME: 'luafanti'
 
 functions:
@@ -48,21 +49,6 @@ functions:
     - http: 'ANY category/'
     - http: 'ANY category/{params}'
 resources:
-  Resources:
-    UserCategoryDynamoDBTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-        - AttributeName: Username
-          AttributeType: S
-        - AttributeName: CategoryId
-          AttributeType: S
-        KeySchema:
-        - AttributeName: Username
-          KeyType: HASH
-        - AttributeName: CategoryId
-          KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: 'UserCategory2'
+  # DynamoDB
+  - ${file(resources/dynamodb-tables.yml)}
+

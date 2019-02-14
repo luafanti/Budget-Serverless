@@ -1,0 +1,18 @@
+Resources:
+  UserCategoryDynamoDBTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: ${self:custom.tableName}
+      AttributeDefinitions:
+      - AttributeName: Username
+        AttributeType: S
+      - AttributeName: CategoryId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: Username
+        KeyType: HASH
+      - AttributeName: CategoryId
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

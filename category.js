@@ -116,9 +116,7 @@ app.put('/category/:categoryId', async function (req, res) {
 //DELETE SINGLE
 app.delete('/category/:categoryId',async function (req, res) {
     const {categoryId} = req.params;
-
-    console.log(`HELLO DELETE ${categoryId}`)
-
+    
     const params = {
         TableName: USERS_CATEGORY_TABLE,
         Key: {
