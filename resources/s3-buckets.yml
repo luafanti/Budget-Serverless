@@ -1,0 +1,23 @@
+#Resources:
+#  BudgetBucket:
+#    Type: AWS::S3::Bucket
+#    Properties:
+#      CorsConfiguration:
+#        CorsRules:
+#        -
+#          AllowedOrigins:
+#            - '*'
+#          AllowedHeaders:
+#            - '*'
+#          AllowedMethods:
+#            - GET
+#            - PUT
+#            - POST
+#            - DELETE
+#            - HEAD
+#          MaxAge: 3000
+## Print out the name of the bucket that is created
+#Outputs:
+#  BudgetBucketName:
+#    Value:
+#      Ref: BudgetBucket

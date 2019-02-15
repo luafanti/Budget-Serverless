@@ -1,13 +1,8 @@
-# NOTE: update this with your service name
 service: budget-serverless-2
-
-# Use the serverless-webpack plugin to transpile ES6
 plugins:
   - serverless-webpack
   - serverless-offline
 
-# serverless-webpack configuration
-# Enable auto-packing of external modules
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
@@ -51,4 +46,10 @@ functions:
 resources:
   # DynamoDB
   - ${file(resources/dynamodb-tables.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
+# S3 - temporary no needed
+# - ${file(resources/s3-buckets.yml)}
+
 
