@@ -32,12 +32,6 @@ provider:
     USER_NAME: 'luafanti'
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
   category:
     handler: category.handler
     events:
