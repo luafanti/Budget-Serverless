@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const express = require('express')
 const app = express()
 import AWS from "aws-sdk";
-import * as dynamoDbLib from "./libs/dynamoDb-lib";
+import * as dynamoDbLib from "../libs/dynamoDb-lib";
 import uuid from "uuid";
 
 const USERS_CATEGORY_TABLE = process.env.USERS_CATEGORY_TABLE;

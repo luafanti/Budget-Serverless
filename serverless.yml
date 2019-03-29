@@ -7,7 +7,9 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-  tableName: ${self:custom.stage}-UserCategory
+  tableName:
+    category: ${self:custom.stage}-UserCategory
+    outgo: ${self:custom.stage}-UserOutgo
   stage: ${opt:stage, self:provider.stage}
 
 provider:
@@ -30,12 +32,13 @@ provider:
     Resource:
     - { "Fn::GetAtt": ["UserCategoryDynamoDBTable", "Arn" ] }
   environment:
-    USERS_CATEGORY_TABLE: ${self:custom.tableName}
+    USERS_CATEGORY_TABLE: ${self:custom.tableName.category.tableName}
+    USERS_OUTGO_TABLE: ${self:custom.tableName.outgo.tableName}
     USER_NAME: 'luafanti'
 
 functions:
   category:
-    handler: category.handler
+    handler: functions/category.handler
     events:
     - http:
         method: ANY
@@ -45,6 +48,14 @@ functions:
     - http:
         method: ANY
         path: category/{params}
+        authorizer:
+          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
+  outgo:
+    handler: functions/outgo.handler
+    events:
+    - http:
+        method: ANY
+        path: outgo/
         authorizer:
           arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
 resources:
