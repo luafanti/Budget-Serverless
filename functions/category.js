@@ -9,7 +9,6 @@ import uuid from "uuid";
 const USERS_CATEGORY_TABLE = process.env.USERS_CATEGORY_TABLE;
 const USER_NAME = process.env.USER_NAME;
 AWS.config.update({ region: "eu-west-1" });
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 app.use(bodyParser.json({ strict: false }));
 

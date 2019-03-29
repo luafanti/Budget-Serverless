@@ -32,8 +32,8 @@ provider:
     Resource:
     - { "Fn::GetAtt": ["UserCategoryDynamoDBTable", "Arn" ] }
   environment:
-    USERS_CATEGORY_TABLE: ${self:custom.tableName.category.tableName}
-    USERS_OUTGO_TABLE: ${self:custom.tableName.outgo.tableName}
+    USERS_CATEGORY_TABLE: ${self:custom.tableName.category}
+    USERS_OUTGO_TABLE: ${self:custom.tableName.outgo}
     USER_NAME: 'luafanti'
 
 functions:

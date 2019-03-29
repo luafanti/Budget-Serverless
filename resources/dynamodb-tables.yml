@@ -2,7 +2,7 @@ Resources:
   UserCategoryDynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: ${self:custom.tableName.category.tableName}
+      TableName: ${self:custom.tableName.category}
       AttributeDefinitions:
       - AttributeName: Username
         AttributeType: S
@@ -19,7 +19,7 @@ Resources:
   UserOutgoDynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: ${self:custom.tableName.outgo.tableName}
+      TableName: ${self:custom.tableName.outgo}
       AttributeDefinitions:
       - AttributeName: Username
         AttributeType: S
