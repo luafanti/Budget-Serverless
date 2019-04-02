@@ -58,6 +58,11 @@ functions:
         path: outgo/
         authorizer:
           arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
+    - http:
+        method: ANY
+        path: outgo/{params}
+        authorizer:
+          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
 resources:
   # DynamoDB
   - ${file(resources/dynamodb-tables.yml)}
