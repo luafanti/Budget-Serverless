@@ -72,7 +72,7 @@ app.get('/category/',async function (req, res) {
                 MainCategory: mainCategory,
                 SubCategory: subCategory,
                 Label: label,
-                createdAt: Date.now()
+                CreatedAt: Date.now()
             },
         };
         try{
