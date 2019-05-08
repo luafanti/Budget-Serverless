@@ -43,13 +43,13 @@ functions:
     - http:
         method: ANY
         path: category/
-        authorizer:
-          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
+#        authorizer:
+#          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
     - http:
         method: ANY
         path: category/{params}
-        authorizer:
-          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
+#        authorizer:
+#          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ
   outgo:
     handler: functions/outgo.handler
     events:
