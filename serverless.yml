@@ -42,6 +42,9 @@ functions:
     events:
     - http:
         method: ANY
+        path: favicon.ico/
+    - http:
+        method: ANY
         path: category/
 #        authorizer:
 #          arn: arn:aws:cognito-idp:eu-west-1:673177665601:userpool/eu-west-1_kyD4eWILJ

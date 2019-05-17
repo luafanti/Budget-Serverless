@@ -12,6 +12,12 @@ AWS.config.update({ region: "eu-west-1" });
 
 app.use(bodyParser.json({ strict: false }));
 
+
+app.get('/favicon.ico',async function (req, res) {
+    res.json("OK").status(204);
+})
+
+
 //GET SINGLE
 app.get('/category/:categoryId',async function (req, res) {
     const params = {
